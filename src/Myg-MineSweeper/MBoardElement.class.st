@@ -174,14 +174,18 @@ MBoardElement >> game [
 
 { #category : 'accessing' }
 MBoardElement >> game: aMBoard [
-
+1halt.
 	game := aMBoard.
 	self padding: (BlInsets all: 5 * game magnifier).
 	self layout columnCount: game width.
 	game grid do: [ :aBox |
 		| boxElement |
 		boxElement := MBoxElement createWithBox: aBox.
-		self addChild: boxElement ]
+		self addChild: boxElement ].
+	" affichage de counter"	
+	game counterText text: ('The number of selection : ', (game counter asString)) asRopedText .
+	self addChild: game counterText.
+	
 ]
 
 { #category : 'initialization' }

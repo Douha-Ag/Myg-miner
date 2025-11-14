@@ -11,7 +11,9 @@ Class {
 	#instVars : [
 		'gameEnded',
 		'announcer',
-		'magnifier'
+		'magnifier',
+		'counter',
+		'counterText'
 	],
 	#category : 'Myg-MineSweeper-Model',
 	#package : 'Myg-MineSweeper',
@@ -146,7 +148,20 @@ MBoard >> clickOnBox: aBox [
 	gameEnded ifTrue: [ ^ self ].
 	x := aBox position x.
 	y := aBox position y.
-	(self boxAt: x at: y) click
+	(self boxAt: x at: y) click.
+	
+	
+	
+]
+
+{ #category : 'accessing' }
+MBoard >> counter [
+	^ counter 
+]
+
+{ #category : 'accessing' }
+MBoard >> counterText [
+	^ counterText 
 ]
 
 { #category : 'box api' }
@@ -187,11 +202,19 @@ MBoard >> height [
 	^ grid height
 ]
 
+{ #category : 'accessing' }
+MBoard >> incrementCounter [
+	counter := counter + 1 
+]
+
 { #category : 'initialization' }
 MBoard >> initialize [
 	super initialize.
 	announcer := Announcer new.
 	gameEnded := false.
+	"compteur du nombre de clic"
+	counter := 0.
+  counterText := BlTextElement new.
 ]
 
 { #category : 'accessing' }
@@ -259,7 +282,6 @@ MBoard >> replaceBox: aBox by: aNewBox [
 
 { #category : 'as yet unclassified' }
 MBoard >> revealBoard [
-
 	self boxesDoWithIndices: [ :aBox :i :j |
 		aBox isSafeBox
 			ifTrue: [ aBox announcer announce: MBoxClickedAnnouncement new ]
