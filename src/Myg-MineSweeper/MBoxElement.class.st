@@ -239,6 +239,11 @@ MBoxElement >> newExplosionStar [
 		  yourself
 ]
 
+{ #category : 'api - bounds' }
+MBoxElement >> size [
+	^ 30@30
+]
+
 { #category : 'writing' }
 MBoxElement >> writeText [
 
