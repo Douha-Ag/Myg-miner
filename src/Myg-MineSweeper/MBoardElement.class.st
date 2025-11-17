@@ -24,35 +24,37 @@ Internal Representation and Key Implementation Points.
     Implementation Points
 "
 Class {
-	#name : #MBoardElement,
-	#superclass : #BlElement,
+	#name : 'MBoardElement',
+	#superclass : 'BlElement',
 	#instVars : [
 		'game'
 	],
-	#category : #'Myg-MineSweeper-UI'
+	#category : 'Myg-MineSweeper-UI',
+	#package : 'Myg-MineSweeper',
+	#tag : 'UI'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MBoardElement class >> launchLarge [
 	^ self withMatrixTest5x5WithMagnifier: 2
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MBoardElement class >> launchRegular [
 	^ self withMatrixTest5x5 
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MBoardElement class >> launchSmall [
 	^ self withMatrixTest5x5WithMagnifier: 0.5
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MBoardElement class >> launchVeryLarge [
 	^ self withMatrixTest5x5WithMagnifier: 4
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MBoardElement class >> open [
 	<script>
 
@@ -113,13 +115,13 @@ MBoardElement class >> open [
 	space show
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MBoardElement class >> openWithModel: aModel [
 
 	^ self openWithModel: aModel withMagnifier: 1
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MBoardElement class >> openWithModel: aModel withMagnifier: aNumber [
 
 	| aGameElement space |
@@ -141,37 +143,39 @@ MBoardElement class >> openWithModel: aModel withMagnifier: aNumber [
 	^ space
 ]
 
-{ #category : #execution }
+{ #category : 'execution' }
 MBoardElement class >> withMatrixForField [
 
 	^ self openWithModel: MBoard matrixForField
 ]
 
-{ #category : #execution }
+{ #category : 'execution' }
 MBoardElement class >> withMatrixForFieldWithMagnifier: aNumber [
 
 	^ self openWithModel: MBoard matrixForField withMagnifier: aNumber 
 ]
 
-{ #category : #execution }
+{ #category : 'execution' }
 MBoardElement class >> withMatrixTest5x5 [
 
 	^ self openWithModel: MBoard matrixTest5x5
 ]
 
-{ #category : #execution }
+{ #category : 'execution' }
 MBoardElement class >> withMatrixTest5x5WithMagnifier: aNumber [
 
 	^ self openWithModel: MBoard matrixTest5x5 withMagnifier: aNumber 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MBoardElement >> game [ 
 	^ game
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MBoardElement >> game: aMBoard [
+|counterPanel|
+1halt.
 
 	game := aMBoard.
 	self padding: (BlInsets all: 5 * game magnifier).
@@ -179,16 +183,24 @@ MBoardElement >> game: aMBoard [
 	game grid do: [ :aBox |
 		| boxElement |
 		boxElement := MBoxElement createWithBox: aBox.
-		self addChild: boxElement ]
+		self addChild: boxElement ].
+	" affichage de counter - occuper toute la largeur"		
+	game counterText text: ('The number of selection : ', ( game counter asString)) asRopedText .
+	game counterText constraintsDo: [ :c | 
+        c grid horizontal span: game width ].
+	self addChild: game counterText.
+
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MBoardElement >> initialize [
-
+1halt.
 	super initialize.
 	self background: (BlBackground paint: Color veryVeryLightGray).
 	self layout: (BlGridLayout horizontal cellSpacing: 5).
 	self constraintsDo: [ :aLayoutConstraints |
 		aLayoutConstraints horizontal fitContent.
-		aLayoutConstraints vertical fitContent ]
+		aLayoutConstraints vertical fitContent ].
+	
+	
 ]
