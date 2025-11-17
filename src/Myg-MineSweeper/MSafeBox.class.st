@@ -20,6 +20,7 @@ MSafeBox >> click [
 	"on incrémente le nombre de clic"
 	self board incrementCounter.
 	self board counterText text: ('The number of selection : ', (self board counter asString)) asRopedText .
+	
 ]
 
 { #category : 'testing' }

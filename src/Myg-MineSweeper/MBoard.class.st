@@ -153,12 +153,12 @@ MBoard >> clickOnBox: aBox [
 
 { #category : 'accessing' }
 MBoard >> counter [ 
-^ counter
+^counter
 ]
 
 { #category : 'accessing' }
 MBoard >> counterText [
-^ counterText 
+^counterText 
 ]
 
 { #category : 'box api' }
@@ -199,11 +199,9 @@ MBoard >> height [
 	^ grid height
 ]
 
-{ #category : 'player api' }
-MBoard >> incrementCounter [
-	counter := counter + 1
-
-
+{ #category : 'accessing' }
+MBoard >> incrementCounter [ 
+counter := counter +1
 ]
 
 { #category : 'initialization' }
@@ -211,8 +209,7 @@ MBoard >> initialize [
 	super initialize.
 	announcer := Announcer new.
 	gameEnded := false.
-	counter := 0.
-	counterText := BlTextElement new.
+	
 	
 	
 ]

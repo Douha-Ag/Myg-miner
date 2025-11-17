@@ -174,7 +174,6 @@ MBoardElement >> game [
 
 { #category : 'accessing' }
 MBoardElement >> game: aMBoard [
-|counterPanel|
 1halt.
 
 	game := aMBoard.
@@ -184,7 +183,7 @@ MBoardElement >> game: aMBoard [
 		| boxElement |
 		boxElement := MBoxElement createWithBox: aBox.
 		self addChild: boxElement ].
-	" affichage de counter - occuper toute la largeur"		
+		" affichage de counter - occuper toute la largeur"		
 	game counterText text: ('The number of selection : ', ( game counter asString)) asRopedText .
 	game counterText constraintsDo: [ :c | 
         c grid horizontal span: game width ].
