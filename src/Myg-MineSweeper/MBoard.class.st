@@ -148,7 +148,10 @@ MBoard >> clickOnBox: aBox [
 	gameEnded ifTrue: [ ^ self ].
 	x := aBox position x.
 	y := aBox position y.
-	(self boxAt: x at: y) click
+	(self boxAt: x at: y) click.
+	
+	
+	
 ]
 
 { #category : 'accessing' }
@@ -279,7 +282,6 @@ MBoard >> replaceBox: aBox by: aNewBox [
 
 { #category : 'as yet unclassified' }
 MBoard >> revealBoard [
-
 	self boxesDoWithIndices: [ :aBox :i :j |
 		aBox isSafeBox
 			ifTrue: [ aBox announcer announce: MBoxClickedAnnouncement new ]
