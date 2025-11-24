@@ -20,6 +20,24 @@ Class {
 	#tag : 'Model'
 }
 
+{ #category : 'test ressources' }
+MBoard class >> countAdjacentMines: matrix atColumn: col atRow: row [
+    "Compte le nombre de mines dans les 8 cases adjacentes"
+    | count |
+    count := 0.
+    "Parcourir les 8 directions autour de la case"
+    (col - 1 to: col + 1) do: [ :c |
+        (row - 1 to: row + 1) do: [ :r |
+            "Ne pas compter la case elle-même et vérifier les limites"
+            ((c = col and: [ r = row ]) not and: [
+                c >= 1 and: [ c <= matrix width and: [
+                    r >= 1 and: [ r <= matrix height ] ] ] ]) ifTrue: [
+                        (matrix at: c@r) isMineBox  ifTrue: [ 
+                            count := count + 1 ] ] ] ].
+    
+    ^ count
+]
+
 { #category : 'instance creation' }
 MBoard class >> createWithMatrix: aMatrix [
 
@@ -30,7 +48,7 @@ MBoard class >> createWithMatrix: aMatrix [
 
 { #category : 'test ressources' }
 MBoard class >> matrixForField [
-
+1halt.
 	^ self createWithMatrix: ((CTNewArray2D
 			    width: 5
 			    height: 5
@@ -42,16 +60,37 @@ MBoard class >> matrixForField [
 			   at: 3 @ 2 put: MBox mine;
 			   at: 3 @ 3 put: MBox mine;
 			   at: 4 @ 4 put: MBox mine;
-			   at: 5 @ 4 put: MBox mine;
+			   at: 5 @ 4 put: MBox mine; 
 			   yourself)
 ]
 
 { #category : 'instance creation' }
 MBoard class >> matrixTest5x5 [
 
-	^ self createWithMatrix:
+	" ^ self createWithMatrix:
 		  (CTNewArray2D width: 5 height: 5 tabulate: [ :column :row |
-			   MBox randomCase ])
+			   MBox randomCase ])"
+		"Nouvel algo : placer aléatoirement, ensuite mettre à jour les chiffres des cases safe"
+    | matrix |
+    matrix := CTNewArray2D width: 5 height: 5 tabulate: [ :column :row |
+        MBox randomCase ].
+    self updateSafeCasesNumbers: matrix.
+    
+    ^ self createWithMatrix: matrix
+]
+
+{ #category : 'test ressources' }
+MBoard class >> updateSafeCasesNumbers: matrix [
+    "Met à jour le nombre de mines adjacentes pour chaque case safe"
+    1 to: matrix width do: [ :col |
+        1 to: matrix height do: [ :row |
+            | currentBox |
+            currentBox := matrix at: col@row.
+            currentBox isSafeBox ifTrue: [
+                | adjacentMines |
+                adjacentMines := self countAdjacentMines: matrix atColumn: col atRow: row.
+                "Mettre à jour la case avec le bon nombre"
+                currentBox adjacentMinesCount: adjacentMines ] ] ]
 ]
 
 { #category : 'accessing' }
@@ -212,9 +251,9 @@ MBoard >> initialize [
 	super initialize.
 	announcer := Announcer new.
 	gameEnded := false.
-	
-	
-	
+	"compteur du nombre de clic"
+	counter := 0.
+  counterText := BlTextElement new.
 ]
 
 { #category : 'accessing' }

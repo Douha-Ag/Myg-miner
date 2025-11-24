@@ -7,7 +7,8 @@ Class {
 	#instVars : [
 		'announcer',
 		'flagged',
-		'clicked'
+		'clicked',
+		'adjacentMinesCount'
 	],
 	#category : 'Myg-MineSweeper-Model',
 	#package : 'Myg-MineSweeper',
@@ -21,7 +22,6 @@ MBox class >> mine [
 
 { #category : 'random subclass instance creation' }
 MBox class >> randomCase [
-
 	^ (1 to: 8) atRandom > 6
 		  ifTrue: [ self mine ]
 		  ifFalse: [ self safe ]
@@ -30,6 +30,12 @@ MBox class >> randomCase [
 { #category : 'subclass instance creation' }
 MBox class >> safe [
 	^ MSafeBox new
+]
+
+{ #category : 'initialization' }
+MBox >> adjacentMinesCount: aNumber [
+    "Définit le nombre de mines adjacentes"
+    adjacentMinesCount := aNumber
 ]
 
 { #category : 'accessing' }
