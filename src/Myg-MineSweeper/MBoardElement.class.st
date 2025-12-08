@@ -168,6 +168,19 @@ MBoardElement class >> withMatrixTest5x5WithMagnifier: aNumber [
 ]
 
 { #category : 'accessing' }
+MBoardElement >> addCounterDisplay [
+    | decorator counterElement |
+    decorator := game decorator.
+    decorator ifNotNil: [
+        counterElement := decorator counterText.
+        counterElement constraintsDo: [ :c | 
+            c grid horizontal span: game width 
+        ].
+        self addChild: counterElement
+    ].
+]
+
+{ #category : 'accessing' }
 MBoardElement >> game [ 
 	^ game
 ]
@@ -180,14 +193,16 @@ MBoardElement >> game: aMBoard [
 	self padding: (BlInsets all: 5 * game magnifier).
 	self layout columnCount: game width.
 	game grid do: [ :aBox |
-		| boxElement |
+		|  boxElement |
 		boxElement := MBoxElement createWithBox: aBox.
 		self addChild: boxElement ].
+	" Afficher le compteur depuis le décorateur "
+    self addCounterDisplay.
 		" affichage de counter - occuper toute la largeur"		
-	game counterText text: ('The number of selection : ', ( game counter asString)) asRopedText .
+	"game counterText text: ('The number of selection : ', ( game counter asString)) asRopedText .
 	game counterText constraintsDo: [ :c | 
         c grid horizontal span: game width ].
-	self addChild: game counterText.
+	self addChild: game counterText."
 
 ]
 

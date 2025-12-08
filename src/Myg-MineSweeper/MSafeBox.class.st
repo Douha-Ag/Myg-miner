@@ -17,9 +17,10 @@ MSafeBox >> click [
 
 	self propagateClick. "Here it is usefull for when there is no bomb around"
 	self board hasBeenCleared ifTrue: [ self board playerWin ].
+	self board notifyBoxClicked: self.
 	"on incrémente le nombre de clic"
-	self board incrementCounter.
-	self board counterText text: ('The number of selection : ', (self board counter asString)) asRopedText .
+	"self board incrementCounter.
+	self board counterText text: ('The number of selection : ', (self board counter asString)) asRopedText ."
 	
 ]
 

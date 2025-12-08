@@ -12,8 +12,7 @@ Class {
 		'gameEnded',
 		'announcer',
 		'magnifier',
-		'counter',
-		'counterText'
+		'decorator'
 	],
 	#category : 'Myg-MineSweeper-Model',
 	#package : 'Myg-MineSweeper',
@@ -194,13 +193,8 @@ MBoard >> clickOnBox: aBox [
 ]
 
 { #category : 'accessing' }
-MBoard >> counter [ 
-^counter
-]
-
-{ #category : 'accessing' }
-MBoard >> counterText [
-^counterText 
+MBoard >> decorator [
+    ^ decorator
 ]
 
 { #category : 'box api' }
@@ -241,19 +235,15 @@ MBoard >> height [
 	^ grid height
 ]
 
-{ #category : 'accessing' }
-MBoard >> incrementCounter [ 
-counter := counter +1
-]
-
 { #category : 'initialization' }
 MBoard >> initialize [
 	super initialize.
 	announcer := Announcer new.
 	gameEnded := false.
+	decorator := SelectionCounterDecorator new board: self.
 	"compteur du nombre de clic"
-	counter := 0.
-  counterText := BlTextElement new.
+	"counter := 0.
+  counterText := BlTextElement new."
 ]
 
 { #category : 'accessing' }
@@ -278,6 +268,12 @@ MBoard >> mineCountAroundBox: aBox [
 		   box isMineBox
 			   ifTrue: [ 1 ]
 			   ifFalse: [ 0 ] ]) sum
+]
+
+{ #category : 'player api' }
+MBoard >> notifyBoxClicked: aBox [
+    " Nouvelle méthode pour notifier le décorateur "
+    decorator ifNotNil: [ decorator onBoxClicked: aBox ].
 ]
 
 { #category : 'box api' }

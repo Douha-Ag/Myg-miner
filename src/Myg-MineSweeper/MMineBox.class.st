@@ -16,9 +16,10 @@ MMineBox >> click [
 	self isFlagged ifTrue: [ ^ self ].
 	self announcer announce: MBoxExplosionAnnouncement new.
 	self board gameEnded ifFalse: [ self board playerLoose ].
+	self board notifyBoxClicked: self.
 	"on incrémente le nombre de clic"
-	self board incrementCounter.
-	self board counterText text: ('The number of selection : ', (self board counter asString)) asRopedText .
+	"self board incrementCounter.
+	self board counterText text: ('The number of selection : ', (self board counter asString)) asRopedText ."
 	
 ]
 
