@@ -6,6 +6,6 @@ Class {
 }
 
 { #category : 'as yet unclassified' }
-MinePlacementStrategy class >> generateMatrix: aBoard width: width height: height [
+MinePlacementStrategy class >> generateMatrixwidth: width height: height [
     self subclassResponsibility
 ]

@@ -47,8 +47,8 @@ MBoard class >> matrixForField [
 
 { #category : 'instance creation' }
 MBoard class >> matrixTest5x5 [
-  " mineStrategy := ConstrainedStrategy new. " "le nouveau alogrithme pour placer les mines"
-^  ConstrainedStrategy generateMatrixwidth: 5 height: 5
+  "le nouvel alogrithme pour placer les mines"
+^  ZoneStrategy generateMatrixwidth: 5 height: 5
 	" ^ self createWithMatrix:
 		  (CTNewArray2D width: 5 height: 5 tabulate: [ :column :row |
 			   MBox randomCase ])"
