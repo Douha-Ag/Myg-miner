@@ -210,6 +210,8 @@ MBoard >> initialize [
 	announcer := Announcer new.
 	gameEnded := false.
 	decorator := SelectionCounterDecorator new board: self.
+	"decorator:= ( RadarDecorator new board: (SelectionCounterDecorator new board: self))."
+
 	"compteur du nombre de clic"
 	"counter := 0.
   counterText := BlTextElement new."

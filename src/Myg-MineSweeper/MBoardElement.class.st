@@ -27,7 +27,9 @@ Class {
 	#name : 'MBoardElement',
 	#superclass : 'BlElement',
 	#instVars : [
-		'game'
+		'game',
+		'box',
+		'radarLabel'
 	],
 	#category : 'Myg-MineSweeper-UI',
 	#package : 'Myg-MineSweeper',
@@ -217,4 +219,11 @@ MBoardElement >> initialize [
 		aLayoutConstraints vertical fitContent ].
 	
 	
+]
+
+{ #category : 'accessing' }
+MBoardElement >> initializeWithBox: aBox game: aGame [
+    box := aBox.
+    game := aGame.
+   
 ]

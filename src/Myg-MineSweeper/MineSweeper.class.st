@@ -115,18 +115,48 @@ MineSweeper class >> menuPlay [
 	^ menu
 ]
 
+{ #category : 'as yet unclassified' }
+MineSweeper class >> menuSize [
+    | menu |
+    menu := ToMenu new.
+    menu labelText: 'Mine Size'.
+    menu iconImage: (Smalltalk ui icons iconNamed: #glamorousSettings).
+
+    menu addItem:
+        (ToMenuItem new
+            labelText: 'Small (10)';
+            clickAction: [ MBoxElement setMineSize: 10 ];
+            yourself).
+
+    menu addItem:
+        (ToMenuItem new
+            labelText: 'Medium (20)';
+            clickAction: [ MBoxElement setMineSize: 20 ];
+            yourself).
+
+    menu addItem:
+        (ToMenuItem new
+            labelText: 'Large (30)';
+            clickAction: [ MBoxElement setMineSize: 30 ];
+            yourself).
+
+    ^ menu
+]
+
 { #category : 'instance creation' }
 MineSweeper class >> open [
 
 	<script>
-	| space playMenu helpMenu bar title |
+	| space playMenu helpMenu sizeMenu bar title |
 	playMenu := self menuPlay.
 	helpMenu := self menuHelp.
+	sizeMenu := self menuSize.
 	bar := self menuBar.
 	title := self title.
 
 	bar addItem: playMenu.
 	bar addItem: helpMenu.
+	bar addItem: sizeMenu.
 	space := BlSpace new.
 
 
