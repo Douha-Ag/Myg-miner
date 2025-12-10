@@ -14,6 +14,9 @@ Class {
 		'magnifier',
 		'decorator'
 	],
+	#classInstVars : [
+		'LastMinePositions'
+	],
 	#category : 'Myg-MineSweeper-Model',
 	#package : 'Myg-MineSweeper',
 	#tag : 'Model'
@@ -25,6 +28,18 @@ MBoard class >> createWithMatrix: aMatrix [
 	^ self new
 		  configureGrid: aMatrix;
 		  yourself
+]
+
+{ #category : 'accessing' }
+MBoard class >> lastMinePositions [
+    ^ LastMinePositions ifNil: [ LastMinePositions := OrderedCollection new ].
+
+
+]
+
+{ #category : 'accessing' }
+MBoard class >> lastMinePositions: aCollection [
+    LastMinePositions := aCollection.
 ]
 
 { #category : 'test ressources' }
@@ -46,19 +61,29 @@ MBoard class >> matrixForField [
 ]
 
 { #category : 'instance creation' }
-MBoard class >> matrixTest5x5 [
-  "le nouvel alogrithme pour placer les mines"
-^  ZoneStrategy generateMatrixwidth: 5 height: 5
-	" ^ self createWithMatrix:
-		  (CTNewArray2D width: 5 height: 5 tabulate: [ :column :row |
-			   MBox randomCase ])"
-		"Nouvel algo : placer aléatoirement, ensuite mettre à jour les chiffres des cases safe"
-   "| matrix |
-    matrix := CTNewArray2D width: 5 height: 5 tabulate: [ :column :row |
-        MBox randomCase ].
-    self updateSafeCasesNumbers: matrix.
-    
-    ^ self createWithMatrix: matrix "
+MBoard class >> matrixTest5x5 [ 
+" mineStrategy := RandomStrategy new. " "le nouveau alogrithme pour placer les mines" 
+|board |
+board := ZoneStrategy generateMatrixwidth: 5 height: 5.
+ board saveLastMinePositions.
+^ board 
+]
+
+{ #category : 'instance creation' }
+MBoard class >> replay5x5 [
+    self lastMinePositions ifEmpty: [
+        ^ self matrixTest5x5.  "S'il n'y a pas encore de partie, on crée une normale"
+    ].
+
+    ^ self createWithMatrix:
+        (CTNewArray2D
+            width: 5
+            height: 5
+            tabulate: [:col :row |
+                (self lastMinePositions includes: col@row)
+                    ifTrue:  [ MMineBox new ]
+                    ifFalse: [ MSafeBox new ] ]
+        )
 ]
 
 { #category : 'accessing' }
@@ -299,6 +324,26 @@ MBoard >> rightFlagCountAroundBox: aBox [
 
 	^ (self flagCountAroundBox: aBox)
 	  = (self mineCountAroundBox: aBox)
+]
+
+{ #category : 'as yet unclassified' }
+MBoard >> saveLastMinePositions [
+    | mines width height |
+    mines := OrderedCollection new.
+
+    width := grid width.
+    height := grid height.
+
+    1 to: width do: [:col |
+        1 to: height do: [:row |
+            | box |
+            box := self boxAt: col at: row.
+            (box isKindOf: MMineBox)
+                ifTrue: [ mines add: col@row ].
+        ].
+    ].
+
+    self class lastMinePositions: mines.
 ]
 
 { #category : 'accessing' }

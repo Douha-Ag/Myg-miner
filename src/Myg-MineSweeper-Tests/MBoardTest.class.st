@@ -155,6 +155,29 @@ MBoardTest >> testHeight [
 	self assert: field height equals: 5
 ]
 
+{ #category : 'tests' }
+MBoardTest >> testMatrixTest5x5 [
+    | board width height |
+
+    board := MBoard matrixTest5x5.
+
+    width := board grid width.
+    height := board grid height.
+
+    "Vérifier la taille correcte de la grille"
+    self assert: width = 5.
+    self assert: height = 5.
+
+    "Vérifier que la sauvegarde s'est faite"
+    self assert: MBoard lastMinePositions notNil.
+    self assert: MBoard lastMinePositions size >= 0.
+
+    "Vérifier qu’aucune case n’est nil"
+    1 to: width do: [:col |
+        1 to: height do: [:row |
+            self assert: (board boxAt: col at: row) notNil ] ].
+]
+
 { #category : 'tests-box api' }
 MBoardTest >> testMineCountAroundBoxAtAt [
 
@@ -228,6 +251,55 @@ MBoardTest >> testPropagateWhenEnoughFlagsAround [
 	self assert: (field boxAt: 3 at: 4) isClicked.
 	self assert: (field boxAt: 3 at: 5) isClicked.
 	self assert: (field boxAt: 1 at: 5) isMineBox
+]
+
+{ #category : 'tests' }
+MBoardTest >> testReplay5x5 [
+    | board1 board2 width height mines1 mines2 |
+
+    board1 := MBoard matrixTest5x5.
+    width := board1 grid width.
+    height := board1 grid height.
+
+    mines1 := OrderedCollection new.
+    1 to: width do: [:col |
+        1 to: height do: [:row |
+            ((board1 boxAt: col at: row) isKindOf: MMineBox)
+                ifTrue: [ mines1 add: col@row ] ] ].
+
+    board2 := MBoard replay5x5.
+
+    mines2 := OrderedCollection new.
+    1 to: width do: [:col |
+        1 to: height do: [:row |
+            ((board2 boxAt: col at: row) isKindOf: MMineBox)
+                ifTrue: [ mines2 add: col@row ] ] ].
+
+    self assert: (mines1 asSet = mines2 asSet).
+
+    self deny: board1 == board2.
+]
+
+{ #category : 'tests' }
+MBoardTest >> testSaveLastMinePositions [
+    | board minePositions width height actualMines |
+
+    board := MBoard matrixTest5x5.
+
+    width := board grid width.
+    height := board grid height.
+
+    actualMines := OrderedCollection new.
+
+    1 to: width do: [:col |
+        1 to: height do: [:row |
+            ((board boxAt: col at: row) isKindOf: MMineBox)
+                ifTrue: [ actualMines add: col@row ] ] ].
+
+    minePositions := MBoard lastMinePositions.
+
+    self assert: minePositions size = actualMines size.
+    self assert: (minePositions asSet = actualMines asSet).
 ]
 
 { #category : 'tests-accessing' }

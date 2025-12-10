@@ -111,6 +111,11 @@ MineSweeper class >> menuPlay [
 			labelText: 'Very Large';
 			clickAction: [ MBoardElement launchVeryLarge ];
 			yourself).
+	menu addItem:  "Laurence a jouté"
+    (ToMenuItem new
+        labelText: 'Replay';
+        clickAction: [ MBoardElement openWithModel: MBoard replay5x5 ];
+        yourself).
 
 	^ menu
 ]
