@@ -200,8 +200,36 @@ MBoxElement >> initializeEvents [
 		anEvent
 			ifPrimary: [ self box isFlagged ifFalse: [self box click ] ]
 			secondary: [ self flag ]
-			middle: [ ^ self ]
-			other: [ ^ self ] ]
+			middle: [  ]
+			"middle: [ ^ self ]"
+			other: [ ^ self ] ].
+		self addEventHandlerOn: BlMiddleClickEvent do: [ :evt | self middleClick ].
+		
+]
+
+{ #category : 'writing' }
+MBoxElement >> middleClick [
+    | label |
+    "Si un label existe déjà, on le retire"
+    (self children
+        detect: [ :c | c id = #middleClickLabel ]
+        ifFound: [ :old | self removeChild: old ]).
+    
+    "Créer le texte"
+    label := BlTextElement new.
+    label id: #middleClickLabel.
+    label text: (self box isMineBox 
+                    ifTrue: ['Mine']
+                    ifFalse: ['Safe']) asRopedText.
+    label text fontSize: (self width min: self height) / 2. "taille de texte du radar"
+
+    label constraintsDo: [ :c |
+        c frame vertical alignCenter.
+        c frame horizontal alignCenter ].
+
+    "Ajouter le texte"
+    self addChild: label.
+
 ]
 
 { #category : 'accessing' }
